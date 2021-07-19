@@ -1,5 +1,6 @@
 #include <Arduino.h>
-#include <LiquidCrystal.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
 #include <Keypad.h>
 
 const int buttonPin = 2;
@@ -34,9 +35,7 @@ char password[4];
 char entered[4];
 
 /* LCD Stuff */
-//const int lcdBacklight = 7;
-const int rs = 6, en = 8, d4 = 9, d5 = 10, d6 = 11, d7 = 12;
-LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+LiquidCrystal_I2C lcd(0x27, 16, 2);  // set the LCD address to 0x27 for a 16 chars and 2 line display
 
 /* Keypad stuff */
 
@@ -49,7 +48,7 @@ char hexaKeys[ROWS][COLS] = {
     {'7', '8', '9'},
     {'*', '0', '#'}};
 
-byte rowPins[ROWS] = {A5, A4, A3, A2};
+byte rowPins[ROWS] = {8, 9, A3, A2};
 byte colPins[COLS] = {A1, 7, A0};
 
 
@@ -215,8 +214,8 @@ void setup()
     pinMode(armedLedPin, OUTPUT);
     pinMode(defusingLedPin, OUTPUT);
 
-
-    lcd.begin(16, 2);
+    
+    lcd.begin();
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("Bomb activated!");
